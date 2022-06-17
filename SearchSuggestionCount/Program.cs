@@ -72,29 +72,16 @@ class State
 
 class SuffixAutomaton
 {
-    private int currentSize = 1;
     private int last = 0;
 
     // TODO: trocar por uma lista
-    private readonly State[] states2 = new State[8];
     private readonly List<State> states = new() { new State() { Lenght = 0, Link = -1 } };
 
     public SuffixAutomaton(string word)
     {
-        for (var i = 0; i < states2.Length; i++)
-        {
-            states2[i] = new State() { Lenght = 0, Link = -1 };
-        }
-
         for (var i = 0; i < word.Length; i++)
         {
             Add(word[i], i);
-        }
-
-        last = 0;
-        foreach (var letter in word)
-        {
-            Add2(letter);
         }
     }
 
@@ -104,12 +91,12 @@ class SuffixAutomaton
 
         foreach (var letter in substring)
         {
-            if (!states2[position].Next.ContainsKey(letter))
+            if (!states[position].Next.ContainsKey(letter))
             {
                 return false;
             }
 
-            position = states2[position].Next[letter];
+            position = states[position].Next[letter];
         }
 
         return true;
@@ -158,45 +145,5 @@ class SuffixAutomaton
             }
         }
         last = r;
-    }
-
-    // TODO: entender algoritmo (https://cp-algorithms.com/string/suffix-automaton.html)
-    private void Add2(char letter)
-    {
-        var current = currentSize++;
-        states2[current].Lenght = states2[last].Lenght + 1;
-        var p = last;
-
-        while (p != -1 && !states2[p].Next.ContainsKey(letter))
-        {
-            states2[p].Next[letter] = current;
-            p = states2[p].Link;
-        }
-        if (p == -1)
-        {
-            states2[current].Link = 0;
-        }
-        else
-        {
-            var q = states2[p].Next[letter];
-            if (states2[p].Lenght + 1 == states2[q].Lenght)
-            {
-                states2[current].Link = q;
-            }
-            else
-            {
-                var clone = currentSize++;
-                states2[clone].Lenght = states2[p].Lenght + 1;
-                states2[clone].Next = states2[q].Next;
-                states2[clone].Link = states2[q].Link;
-                while (p != -1 && states2[p].Next[letter] == q)
-                {
-                    states2[p].Next[letter] = clone;
-                    p = states2[p].Link;
-                }
-                states2[q].Link = states2[current].Link = clone;
-            }
-        }
-        last = current;
     }
 }
