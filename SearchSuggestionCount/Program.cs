@@ -19,14 +19,12 @@ class SearchSuggestionCount
         //}
 
         var suffixAutomaton = new SuffixAutomaton("abcbc");
+        Console.WriteLine(suffixAutomaton.IsSuffix("bc"));
+        Console.WriteLine(suffixAutomaton.IsSuffix("c"));
+        Console.WriteLine(suffixAutomaton.IsSuffix("bcbc"));
 
-        Console.WriteLine(suffixAutomaton.IsSuffix("cbcb"));
-        Console.WriteLine(suffixAutomaton.IsSuffix("ab"));
-        Console.WriteLine(suffixAutomaton.IsSuffix("a"));
         // TODO: entender porque está dando true quando era para dar false
-        Console.WriteLine(suffixAutomaton.IsSuffix("bbc"));
-
-        //var suffixAutomaton2 = new SuffixAutomaton("heaven");
+        Console.WriteLine(suffixAutomaton.IsSuffix("abc"));
     }
 
     private static float GetAverageNumberOfKeysToFormWords(IEnumerable<string> words)
@@ -67,6 +65,7 @@ class State
 {
     public int Lenght { get; set; }
     public int Link { get; set; }
+    public bool IsEndState { get; set; }
     public Dictionary<char, int> Next = new();
 }
 
@@ -74,7 +73,6 @@ class SuffixAutomaton
 {
     private int last = 0;
 
-    // TODO: trocar por uma lista
     private readonly List<State> states = new() { new State() { Lenght = 0, Link = -1 } };
 
     public SuffixAutomaton(string word)
@@ -83,6 +81,8 @@ class SuffixAutomaton
         {
             Add(word[i], i);
         }
+
+        SetEndStates();
     }
 
     public bool IsSuffix(string substring)
@@ -99,7 +99,7 @@ class SuffixAutomaton
             position = states[position].Next[letter];
         }
 
-        return true;
+        return states[position].IsEndState;
     }
 
     private void Add(char letter, int index)
@@ -145,5 +145,16 @@ class SuffixAutomaton
             }
         }
         last = r;
+    }
+
+    private void SetEndStates()
+    {
+        var p = last;
+        
+        while (p > 0)
+        {
+            states[p].IsEndState = true;
+            p = states[p].Link;
+        }
     }
 }
