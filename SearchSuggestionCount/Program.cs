@@ -4,31 +4,32 @@ class SearchSuggestionCount
 {
     public static void Main()
     {
-        // trocar por readline antes de submeter resposta
-        // string input = Console.ReadLine();
-        //var input = File.ReadLines("input.txt");
+        // TODO: trocar por readline antes de submeter resposta
+        //string input = Console.ReadLine();
 
-        //var listsOfWords = ParseInput(input);
+        var input = File.ReadLines("input.txt");
 
-        //var output = File.ReadLines("output.txt").ToArray();
+        var listsOfWords = ParseInput(input);
 
-        //for (int i = 0; i < output.Length; i++)
-        //{
-        //    var result = GetAverageNumberOfKeysToFormWords(listsOfWords[i]);
-        //    Console.WriteLine($"Result: {result} | Expected: {output[i]}");
-        //}
+        var output = File.ReadLines("output.txt").ToArray();
 
-        var suffixAutomaton = new SuffixAutomaton("abcbc");
-        Console.WriteLine(suffixAutomaton.IsSuffix("bc"));
-        Console.WriteLine(suffixAutomaton.IsSuffix("c"));
-        Console.WriteLine(suffixAutomaton.IsSuffix("bcbc"));
-
-        // TODO: entender porque está dando true quando era para dar false
-        Console.WriteLine(suffixAutomaton.IsSuffix("abc"));
+        for (int i = 0; i < output.Length; i++)
+        {
+            var result = GetAverageNumberOfKeysToFormWords(listsOfWords[i]);
+            Console.WriteLine($"Result: {result} | Expected: {output[i]}");
+        }
     }
 
-    private static float GetAverageNumberOfKeysToFormWords(IEnumerable<string> words)
+    // TODO: descobrir algoritmo que resolve o problema
+    private static float GetAverageNumberOfKeysToFormWords(IReadOnlyList<string> words)
     {
+        var automatons = new List<SuffixAutomaton>();
+
+        foreach (var word in words)
+        {
+            automatons.Add(new SuffixAutomaton(word));
+        }
+
         return 1;
     }
 
