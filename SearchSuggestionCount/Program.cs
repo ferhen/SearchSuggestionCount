@@ -1,36 +1,75 @@
 ﻿using System;
+using System.Collections.Generic;
 
 class SearchSuggestionCount
 {
     public static void Main()
     {
         // TODO: trocar por readline antes de submeter resposta
-        //string input = Console.ReadLine();
+        //var input = Console.ReadLine().Split('\n');
 
         var input = File.ReadLines("input.txt");
 
         var listsOfWords = ParseInput(input);
 
-        var output = File.ReadLines("output.txt").ToArray();
-
-        for (int i = 0; i < output.Length; i++)
+        foreach (var listOfWords in listsOfWords)
         {
-            var result = GetAverageNumberOfKeysToFormWords(listsOfWords[i]);
-            Console.WriteLine($"Result: {result} | Expected: {output[i]}");
+            var result = GetAverageNumberOfKeysToFormWords(listOfWords);
+            Console.WriteLine(result);
         }
     }
 
-    // TODO: descobrir algoritmo que resolve o problema
+    public static string Reverse(string s)
+    {
+        var charArray = s.ToCharArray();
+        Array.Reverse(charArray);
+        return new string(charArray);
+    }
+
     private static float GetAverageNumberOfKeysToFormWords(IReadOnlyList<string> words)
     {
         var automatons = new List<SuffixAutomaton>();
+        var reversedWords = new List<string>();
 
         foreach (var word in words)
         {
-            automatons.Add(new SuffixAutomaton(word));
+            automatons.Add(new SuffixAutomaton(Reverse(word)));
+            reversedWords.Add(Reverse(word));
         }
 
-        return 1;
+        float sum = 0;
+
+        foreach (var reversedWord in reversedWords)
+        {
+            var copyAutomatons = new List<SuffixAutomaton>(automatons);
+
+            for (int letterIndex = 1; letterIndex <= reversedWord.Length; letterIndex++)
+            {
+                var isAnyFalse = false;
+                var falseAutomatons = new List<SuffixAutomaton>();
+
+                foreach (var automaton in copyAutomatons)
+                {
+                    if (!automaton.IsSuffix(reversedWord.Substring(reversedWord.Length - letterIndex)))
+                    {
+                        falseAutomatons.Add(automaton);
+                        isAnyFalse = true;
+                    }
+                }
+
+                foreach (var falseAutomaton in falseAutomatons)
+                {
+                    copyAutomatons.Remove(falseAutomaton);
+                }
+
+                if (isAnyFalse || letterIndex == 1)
+                {
+                    sum++;
+                }
+            }
+        }
+
+        return sum / words.Count;
     }
 
     private static IReadOnlyList<IReadOnlyList<string>> ParseInput(IEnumerable<string> input)
@@ -67,14 +106,14 @@ class State
     public int Lenght { get; set; }
     public int Link { get; set; }
     public bool IsEndState { get; set; }
-    public Dictionary<char, int> Next = new();
+    public Dictionary<char, int> Next = new Dictionary<char, int>();
 }
 
 class SuffixAutomaton
 {
     private int last = 0;
 
-    private readonly List<State> states = new() { new State() { Lenght = 0, Link = -1 } };
+    private readonly List<State> states = new List<State> { new State() { Lenght = 0, Link = -1 } };
 
     public SuffixAutomaton(string word)
     {
