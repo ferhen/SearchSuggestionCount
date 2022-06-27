@@ -1,0 +1,133 @@
+﻿hello (3)
+
+hello   h (T) -> e (T) -> l (T) -> l (T) -> o (T) 
+hell    h (T) -> e (T) -> l (T) -> l (T) -> ''(F)
+heaven  h (T) -> e (T) -> l (F)
+goodbye h (F)
+
+hell (2)
+
+hello   h (T) -> e (T) -> l (T) -> l (T)
+hell    h (T) -> e (T) -> l (T) -> l (T)
+heaven  h (T) -> e (T) -> l (F)
+goodbye h (F)
+
+heaven (2)
+
+hello   h (T) -> e (T) -> a (F)
+hell    h (T) -> e (T) -> a (F)
+heaven  h (T) -> e (T) -> a (T) -> v (T) -> e (T) -> n (T)
+goodbye h (F)
+
+goodbye (1)
+
+hello   g (F)
+hell    g (F)
+heaven  g (F)
+goodbye g (T) -> o (T) -> o (T) -> d (T) -> b (T) -> y (T) -> e (T)
+
+se algum é true e algum é falso -> incrementa 1
+se todos são true -> não incrementa
+se todos são false -> impossível
+
+a partir da sua ideia eu pensei no seguinte algoritmo.
+
+para cada palavra, eu comparo todos os sufixos com todos os autômatos
+exemplo:
+    hello | ello | llo | lo | o
+    hell | ell | ll | l 
+    heaven | eaven | aven | ven | en | n
+    goodbye | oodbye | odbye | dbye | bye | ye | e
+
+quando algum não for sufixo, a contagem incrementa em um, quando todos forem, não incrementa a contagem
+
+
+hi (2)
+
+hi -> h (T) -> i (T)
+he -> h (T) -> i (F)
+h  -> h (T) -> ''(F)
+
+he (2)
+
+hi -> h (T) -> e (F)
+he -> h (T) -> e (T)
+h  -> h (T) -> ''(F)
+
+h  (1)
+
+hi -> h (T)
+he -> h (T)
+h  -> h (T)
+
+a primeira letra é sempre contabilizada mesmo se não houver algum autômato que resulte em falso
+
+structure (3)
+
+structure   T -> T -> T -> T -> T -> T -> T -> T -> T
+structures  T -> T -> T -> T -> T -> T -> T -> T -> T
+ride        F
+riders      F
+stress      T -> T -> T -> F
+solstice    T -> F
+ridiculous  F
+
+structures (4)
+
+structure   T -> T -> T -> T -> T -> T -> T -> T -> T -> F
+structures  T -> T -> T -> T -> T -> T -> T -> T -> T -> T
+ride        F
+riders      F
+stress      T -> T -> T -> F
+solstice    T -> F
+ridiculous  F
+
+ride (2)
+
+structure   F
+structures  F
+ride        T -> T -> T -> T
+riders      T -> T -> T -> T
+stress      F
+solstice    F
+ridiculous  T -> T -> F
+
+riders (3)
+
+structure   F
+structures  F
+ride        T -> T -> T -> T -> F
+riders      T -> T -> T -> T -> T
+stress      F
+solstice    F
+ridiculous  T -> T -> F
+
+stress (3)
+
+structure   T -> T -> T -> F
+structures  T -> T -> T -> F
+ride        F
+riders      F
+stress      T -> T -> T -> T -> T -> T
+solstice    T -> F
+ridiculous  F
+
+solstice (2)
+
+structure   T -> F
+structures  T -> F
+ride        F
+riders      F
+stress      T -> F
+solstice    T -> T -> T -> T -> T -> T -> T -> T
+ridiculous  F
+
+ridiculous (2)
+
+structure   F
+structures  F
+ride        T -> T -> T -> F
+riders      T -> T -> T -> F
+stress      F
+solstice    F
+ridiculous  T -> T -> T -> T -> T -> T -> T -> T -> T -> T

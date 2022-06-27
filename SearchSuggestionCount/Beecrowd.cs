@@ -5,7 +5,7 @@ namespace Beecrowd
 {
     class Beecrowd
     {
-        public static void Main()
+        public static void Main2()
         {
             var listsOfWords = ReadInput();
 
@@ -30,7 +30,8 @@ namespace Beecrowd
 
             foreach (var word in words)
             {
-                automatons.Add(new SuffixAutomaton(Reverse(word)));
+                var automaton = SuffixAutomatonFactory.GetInstance(Reverse(word));
+                automatons.Add(automaton);
                 reversedWords.Add(Reverse(word));
             }
 
@@ -103,6 +104,21 @@ namespace Beecrowd
         }
     }
 
+    static class SuffixAutomatonFactory
+    {
+        private static readonly Dictionary<string, SuffixAutomaton> automatons = new Dictionary<string, SuffixAutomaton>();
+
+        public static SuffixAutomaton GetInstance(string word)
+        {
+            if (!automatons.ContainsKey(word))
+            {
+                automatons[word] = new SuffixAutomaton(word);
+            }
+
+            return automatons[word];
+        }
+    }
+
     class State
     {
         public int Length { get; set; }
@@ -169,7 +185,7 @@ namespace Beecrowd
 
                     states.Add(new State()
                     {
-                        Next = currentState.Next,
+                        Next = new Dictionary<char, int>(currentState.Next),
                         Length = currentState.Length + 1,
                         Link = currentState.Link
                     });
