@@ -5,9 +5,6 @@ class SearchSuggestionCount
 {
     public static void Main()
     {
-        // TODO: trocar por readline antes de submeter resposta
-        //var input = Console.ReadLine().Split('\n');
-
         var input = File.ReadLines("input.txt");
 
         var listsOfWords = ParseInput(input);
@@ -103,7 +100,7 @@ class SearchSuggestionCount
 
 class State
 {
-    public int Lenght { get; set; }
+    public int Length { get; set; }
     public int Link { get; set; }
     public bool IsEndState { get; set; }
     public Dictionary<char, int> Next = new Dictionary<char, int>();
@@ -113,7 +110,7 @@ class SuffixAutomaton
 {
     private int last = 0;
 
-    private readonly List<State> states = new List<State> { new State() { Lenght = 0, Link = -1 } };
+    private readonly List<State> states = new List<State> { new State() { Length = 0, Link = -1 } };
 
     public SuffixAutomaton(string word)
     {
@@ -144,7 +141,7 @@ class SuffixAutomaton
 
     private void Add(char letter, int index)
     {
-        states.Add(new State() { Lenght = index + 1, Link = 0 });
+        states.Add(new State() { Length = index + 1, Link = 0 });
         var r = states.Count - 1;
         var p = last;
 
@@ -157,7 +154,7 @@ class SuffixAutomaton
         {
             var q = states[p].Next[letter];
 
-            if (states[p].Lenght + 1 == states[q].Lenght)
+            if (states[p].Length + 1 == states[q].Length)
             {
                 states[r].Link = q;
             }
@@ -168,7 +165,7 @@ class SuffixAutomaton
                 states.Add(new State()
                 {
                     Next = currentState.Next,
-                    Lenght = currentState.Lenght + 1,
+                    Length = currentState.Length + 1,
                     Link = currentState.Link
                 });
 
@@ -190,7 +187,7 @@ class SuffixAutomaton
     private void SetEndStates()
     {
         var p = last;
-        
+
         while (p > 0)
         {
             states[p].IsEndState = true;
