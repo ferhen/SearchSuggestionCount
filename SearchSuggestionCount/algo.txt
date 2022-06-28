@@ -1,22 +1,22 @@
 ﻿hello (3)
 
-hello   h (T) -> e (T) -> l (T) -> l (T) -> o (T) 
-hell    h (T) -> e (T) -> l (T) -> l (T) -> ''(F)
-heaven  h (T) -> e (T) -> l (F)
+hello   h (T) -> he (T) -> hel (T) -> hell (T) -> hello (T) 
+hell    h (T) -> he (T) -> hel (T) -> hell (T) -> hello (F)
+heaven  h (T) -> he (T) -> hel (F)
 goodbye h (F)
 
 hell (2)
 
-hello   h (T) -> e (T) -> l (T) -> l (T)
-hell    h (T) -> e (T) -> l (T) -> l (T)
-heaven  h (T) -> e (T) -> l (F)
+hello   h (T) -> he (T) -> hel (T) -> hell (T)
+hell    h (T) -> he (T) -> hel (T) -> hell (T)
+heaven  h (T) -> he (T) -> hel (F)
 goodbye h (F)
 
 heaven (2)
 
-hello   h (T) -> e (T) -> a (F)
-hell    h (T) -> e (T) -> a (F)
-heaven  h (T) -> e (T) -> a (T) -> v (T) -> e (T) -> n (T)
+hello   h (T) -> he (T) -> hea (F)
+hell    h (T) -> he (T) -> hea (F)
+heaven  h (T) -> he (T) -> hea (T) -> heav (T) -> heave (T) -> heaven (T)
 goodbye h (F)
 
 goodbye (1)
@@ -24,23 +24,11 @@ goodbye (1)
 hello   g (F)
 hell    g (F)
 heaven  g (F)
-goodbye g (T) -> o (T) -> o (T) -> d (T) -> b (T) -> y (T) -> e (T)
+goodbye g (T) -> go (T) -> goo (T) -> good (T) -> goodb (T) -> goodby (T) -> goodbye (T)
 
 se algum é true e algum é falso -> incrementa 1
 se todos são true -> não incrementa
 se todos são false -> impossível
-
-a partir da sua ideia eu pensei no seguinte algoritmo.
-
-para cada palavra, eu comparo todos os sufixos com todos os autômatos
-exemplo:
-    hello | ello | llo | lo | o
-    hell | ell | ll | l 
-    heaven | eaven | aven | ven | en | n
-    goodbye | oodbye | odbye | dbye | bye | ye | e
-
-quando algum não for sufixo, a contagem incrementa em um, quando todos forem, não incrementa a contagem
-
 
 hi (2)
 
